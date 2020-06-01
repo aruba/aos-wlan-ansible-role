@@ -1,0 +1,12 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Adding a hostname to the Controller
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - hostname:
+              hostname: Controller-1-HQ

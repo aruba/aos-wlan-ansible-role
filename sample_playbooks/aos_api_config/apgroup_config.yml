@@ -1,0 +1,14 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Creating AP Group
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - ap_group:
+              - profile-name: test_apgroup
+                virtual-ap:
+                  - profile-name: test_vap

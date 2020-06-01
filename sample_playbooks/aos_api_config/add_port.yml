@@ -1,0 +1,13 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Configuring ports on the controller
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - int_gig:
+              - dev-slot/module/port: 0/0/1
+              - dev-slot/module/port: 0/0/2

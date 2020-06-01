@@ -1,0 +1,20 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Creating a new Syslog server config
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - log_lvl_syslog_ipv4_options:
+              ipaddr: 1.2.3.4
+              type: true
+              log_type: network
+              facility: true
+              fac: local0
+              severity: true
+              lvl_severity: alerts
+              format: true
+              format_type: cef

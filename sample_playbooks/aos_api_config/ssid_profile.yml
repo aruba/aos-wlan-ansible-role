@@ -1,0 +1,16 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Adding a basic SSID Profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - ssid_prof:
+              profile-name: emp_ssid_prof
+              essid:
+                essid: employee_ssid
+              opmode:
+                wpa2-aes: true

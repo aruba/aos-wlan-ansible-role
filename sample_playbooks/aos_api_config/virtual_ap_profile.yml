@@ -1,0 +1,12 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Adding a basic Virtual AP Profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - virtual_ap:
+              profile-name: test_vap_prof

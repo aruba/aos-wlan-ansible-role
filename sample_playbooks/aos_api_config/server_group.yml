@@ -1,0 +1,14 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Adding a Server Group Profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - server_group_prof:
+              sg_name: test_server_group
+              auth_server:
+                name: test_radius_server #should already exist or use "Internal"
