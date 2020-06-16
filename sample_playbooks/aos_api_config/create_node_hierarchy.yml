@@ -1,0 +1,20 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Creating node hierarchy
+      aos_api_config:
+        method: POST
+        config_path: /md
+        data:
+          - configuration_node:
+              node-path: /md/region
+
+          #for second level of hierarchy add one more element to previous node path
+          - configuration_node:
+              node-path: /md/region/site
+
+          #for third level of hierarchy add one more element to previous node path
+          - configuration_node:
+              node-path: /md/region/site/building

@@ -1,0 +1,24 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Upgrading firmware
+      aos_api_config:
+        method: POST
+        config_path: /mm
+        data:
+          - copy_scp_system:
+              partition_num: partition1
+              scphost: 10.10.10.10
+              username: admin
+              filename: ArubaOS_70xx_8.6.0.0_74441
+              passwd: admin-passwd
+
+    - name: Reloading Controller
+      aos_api_config:
+        method: POST
+        config_path: /mm
+        data:
+          - reload:
+              force: true

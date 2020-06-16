@@ -1,0 +1,17 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Creating a AAA Profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - aaa_prof:
+              profile-name: test_dot1x
+              auth_profile:
+                profile-name: test_dot1x
+              dot1x_server_group:
+                srv-group: test_dot1x
+              download_role: {}

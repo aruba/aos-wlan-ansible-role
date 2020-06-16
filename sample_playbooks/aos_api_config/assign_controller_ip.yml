@@ -1,0 +1,13 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Assigning IP to the controller
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - ctrl_ip:
+              id: 5
+              intf: vlan

@@ -1,0 +1,162 @@
+---
+-  name: Create and configure an internal Guest SSID
+   hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Create the ssid profile with essid and opmode
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - ssid_prof:
+              profile-name: ssid-guest-demo
+              ssid_enable: {}
+              essid:
+                essid: guest-demo
+              opmode:
+                opensystem: true
+
+    - name: Create the netdestination for the authenticated clients
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - netdst:
+              dstname: netdst-guest-demo
+              netdst__network:
+                - address: 10.0.0.0
+                  netmask: 255.0.0.0
+                - address: 192.16.0.0
+                  netmask: 255.255.0.0
+
+    - name: Create the periodic time range
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - time_range_per:
+              name: guest-demo-working-hrs
+              time_range_per__day:
+                - day: Weekday
+                  StartTime: '07:00'
+                  EndTime: '18:00'
+
+    - name: Create the policy with session acls and time range
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - acl_sess:
+              accname: acl-guest-demo-time-range
+              acl_sess__v4policy:
+                - suser: true
+                  dany: true
+                  service-name: svc-dhcp
+                  permit: true
+                  trname: guest-demo-working-hrs
+                - suser: true
+                  dany: true
+                  service-name: svc-dns
+                  permit: true
+                  trname: guest-demo-working-hrs
+                - suser: true
+                  dstalias: netdst-guest-demo
+                  service-any: true
+                  permit: true
+                  trname: guest-demo-working-hrs
+                - suser: true
+                  dany: true
+                  service-name: svc-http
+                  permit: true
+                  trname: guest-demo-working-hrs
+                - suser: true
+                  dany: true
+                  service-name: svc-https
+                  permit: true
+                  trname: guest-demo-working-hrs
+                - suser: true
+                  dany: true
+                  service-any: true
+                  deny: true
+
+    - name: Create the user role assigned after captive portal authentication
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - role:
+              rname: demo
+              role__acl:
+                - acl_type: session
+                  pname: acl-guest-demo-time-range
+
+    - name: Create the captive portal authentication profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - cp_auth_profile:
+              profile-name: cp-guest-demo
+              cp_default_role:
+                default-role: demo
+              cp_default_guest_role:
+                default-guest-role: demo
+              cp_server_group:
+                server-group: internal
+              allow_user: {}
+              logout_popup: {}
+              cp_proto_http: {}
+
+    - name: Create the guest logon user role
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - role:
+              rname: usr-guest-demo
+              role__acl:
+                - acl_type: session
+                  pname: logon-control
+                - acl_type: session
+                  pname: captiveportal
+                - acl_type: session
+                  pname: v6-logon-control
+                - acl_type: session
+                  pname: captiveportal6
+              role__cp:
+                cp_profile_name: cp-guest-demo
+
+    - name: Create the aaa profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - aaa_prof:
+              profile-name: aaa-guest-demo
+              default_user_role:
+                role: usr-guest-demo
+
+    - name: Create the virtual ap profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - virtual_ap:
+              profile-name: vap-guest-demo
+              aaa_prof:
+                profile-name: aaa-guest-demo
+              vlan:
+                vlan: 16
+              ssid_prof:
+                profile-name: ssid-guest-demo
+
+    - name: Create the AP group with virtual AP profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - ap_group:
+              profile-name: apgrp-guest-demo
+              virtual_ap:
+                - profile-name: vap-guest-demo

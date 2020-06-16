@@ -1,0 +1,27 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Configuring a Port Channel
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - int_pc:
+              int_pc_trusted: {}
+              int_pc_port_mode:
+                port_mode: trunk
+              int_pc_trusted_vlan:
+                WORD: 1-4094 #choose your VLANs from this range
+              int_pc_vlan_native:
+                vlanId: 1
+              int_pc_access_vlan:
+                _action: noop
+              id: 0
+              int_pc_allowed_vlan:
+                WORD: 1-4094 #choose your VLANs from this range
+              int_pc_add_gig:
+                - slot/module/port: 0/0/3
+                - slot/module/port: 0/0/4
+                - slot/module/port: 0/0/5

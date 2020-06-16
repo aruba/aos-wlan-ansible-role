@@ -1,0 +1,11 @@
+all:
+  hosts:
+    controller:
+      ansible_host: <mm-ip>
+      ansible_user: <mm-username>
+      ansible_password: <mm-passwd>
+      ansible_connection: httpapi
+      ansible_network_os: aos
+      ansible_httpapi_port: 4343
+      ansible_httpapi_validate_certs: False
+      ansible_httpapi_use_ssl: True

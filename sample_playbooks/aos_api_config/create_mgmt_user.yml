@@ -1,0 +1,15 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Creating a management user
+      aos_api_config:
+        method: POST
+        config_path: /mm
+        data:
+          - mgmt_user_cfg_int:
+              path: /md/site/controller
+              username: admin
+              rolename: root
+              password: my-passwd-123

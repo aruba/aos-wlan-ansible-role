@@ -1,0 +1,15 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Creating an AP System Profile
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - ap_sys_prof:
+              profile-name: new_ap_sys_profile
+              led_mode:
+                led_mode: off
+              telnet: {}

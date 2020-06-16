@@ -1,0 +1,22 @@
+---
+-  name: Adding a managed device (md) to the given hierarchy and changing hostname
+   hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Adding a device
+      aos_api_config:
+        method: POST
+        config_path: /md
+        data:
+          - configuration_device:
+              dev-model: A7010
+              mac-address: fa:fa:fa:fa:fa:fa
+              config-path: md/Boston
+    - name: Changnig hostname
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston/fa:fa:fa:fa:fa:fa
+        data:
+          - hostname:
+              hostname: new-controller

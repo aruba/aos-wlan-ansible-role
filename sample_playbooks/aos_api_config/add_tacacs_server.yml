@@ -1,0 +1,16 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aos_wlan_role
+   tasks:
+    - name: Adding a TACACS server
+      aos_api_config:
+        method: POST
+        config_path: /md/Boston
+        data:
+          - tacacs_server:
+              tacacs_server_name: test_tacacs
+              tacacs_host:
+                host: 2.2.2.2
+              tacacs_key:
+                key: my-key-123
