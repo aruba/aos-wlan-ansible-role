@@ -1,9 +1,8 @@
----
--  name: Create and configure a BYOD SSID
-   hosts: all
-   roles:
+- name: Create and configure a BYOD SSID
+  hosts: all
+  roles:
     - role: arubanetworks.aos_wlan_role
-   tasks:
+  tasks:
     - name: Create a policy permitting access for BYOD clients to Captive Portal
       aos_api_config:
         method: POST
@@ -14,24 +13,22 @@
               acl_sess__v4policy:
                 - suser: true
                   src: suser
-                  dipaddr: 1.1.1.1 #cppm ip addr
+                  dipaddr: 1.1.1.1
                   dst: dhost
                   service-name: svc-http
                   svc: service-name
                   service_app: service
                   permit: true
                   action: permit
-
                 - suser: true
                   src: suser
-                  dipaddr: 1.1.1.1 #cppm ip addr
+                  dipaddr: 1.1.1.1
                   dst: dhost
                   service-name: svc-https
                   svc: service-name
                   service_app: service
                   permit: true
                   action: permit
-
     - name: Create a policy to prevent BYOD clients from acting as a DHCP server
       aos_api_config:
         method: POST
@@ -62,7 +59,6 @@
                   service_app: service
                   deny: true
                   action: deny_opt
-
     - name: Create a policy to allow all other traffic
       aos_api_config:
         method: POST
@@ -89,7 +85,6 @@
                   service_app: service
                   permit: true
                   action: permit
-
     - name: Create a role named "onboard" and add appropriate ACLs
       aos_api_config:
         method: POST
@@ -104,7 +99,6 @@
                   pname: logon-control
                 - acl_type: session
                   pname: captiveportal
-
     - name: Create a role named "Mobilefirst-byod_employee" and add appropriate ACLs
       aos_api_config:
         method: POST
@@ -117,7 +111,6 @@
                   pname: Mobilefirst-byod_employee-deny-client-as-dhcp-server
                 - acl_type: session
                   pname: Mobilefirst-byod_employee-allowall
-
     - name: Create a RADIUS server
       aos_api_config:
         method: POST
@@ -126,12 +119,11 @@
           - rad_server:
               rad_server_name: CP-Corp-Server
               rad_host:
-                host: 1.1.1.1 #cppm ip addr
+                host: 1.1.1.1
               rad_key:
-                key: my-key-123 #radius key
+                key: my-key-123
               rad_mac_delimiter:
                 mba_delimiter_t: colon
-
     - name: Create a Server Group and add newly created RADIUS server
       aos_api_config:
         method: POST
@@ -141,17 +133,15 @@
               sg_name: CP-Corp-ServerGroup
               auth_server:
                 - name: CP-Corp-Server
-
     - name: Define a RFC3576 Server
       aos_api_config:
         method: POST
         config_path: /md/Boston
         data:
           - rfc3576_client_prof:
-              server_ip: 1.1.1.1 #cppm ip addr
+              server_ip: 1.1.1.1
               rfc3576_secret:
-                key: my-key-123 #rfc key
-
+                key: my-key-123
     - name: Define Dot1x Auth Profile
       aos_api_config:
         method: POST
@@ -159,7 +149,6 @@
         data:
           - dot1x_auth_profile:
               profile-name: MobileFirst-byod_employee_dot1x_auth_prof
-
     - name: Create AAA Profile
       aos_api_config:
         method: POST
@@ -178,8 +167,7 @@
               rad_acct_sg:
                 server_group_name: CP-Corp-ServerGroup
               rfc3576_client:
-                - rfc3576_server: 1.1.1.1 #cppm ip addr
-
+                - rfc3576_server: 1.1.1.1
     - name: Create a Netdestination "google-play"
       aos_api_config:
         method: POST
@@ -188,43 +176,43 @@
           - netdst:
               dstname: google-play
               netdst__entry:
-                - host_name: "*.ggpht.com"
+                - host_name: '*.ggpht.com'
                   _objname: netdst__name
-                - host_name: "*.gstatic.com"
+                - host_name: '*.gstatic.com'
                   _objname: netdst__name
-                - host_name: "*.android.clients.google.com"
+                - host_name: '*.android.clients.google.com'
                   _objname: netdst__name
-                - host_name: "*.accounts.google.com"
+                - host_name: '*.accounts.google.com'
                   _objname: netdst__name
-                - host_name: "*.clients1.google.com"
+                - host_name: '*.clients1.google.com'
                   _objname: netdst__name
-                - host_name: "*.clients2.google.com"
+                - host_name: '*.clients2.google.com'
                   _objname: netdst__name
-                - host_name: "*.clients3.google.com"
+                - host_name: '*.clients3.google.com'
                   _objname: netdst__name
-                - host_name: "*.clients4.google.com"
+                - host_name: '*.clients4.google.com'
                   _objname: netdst__name
-                - host_name: "*.i.ytimg.com"
+                - host_name: '*.i.ytimg.com'
                   _objname: netdst__name
-                - host_name: "*.google-analytics.com"
+                - host_name: '*.google-analytics.com'
                   _objname: netdst__name
-                - host_name: "*.android.l.google.com"
+                - host_name: '*.android.l.google.com'
                   _objname: netdst__name
-                - host_name: "*.mtalk.google.com"
+                - host_name: '*.mtalk.google.com'
                   _objname: netdst__name
-                - host_name: "*.clients.l.google.com"
+                - host_name: '*.clients.l.google.com'
                   _objname: netdst__name
-                - host_name: "*.googleapis.com"
+                - host_name: '*.googleapis.com'
                   _objname: netdst__name
-                - host_name: "*.play.google.com"
+                - host_name: '*.play.google.com'
                   _objname: netdst__name
-                - host_name: "*.1e100.net"
+                - host_name: '*.1e100.net'
                   _objname: netdst__name
-                - host_name: "*.gvt1.com"
+                - host_name: '*.gvt1.com'
                   _objname: netdst__name
-                - host_name: "*.l.googleusercontent.com"
+                - host_name: '*.l.googleusercontent.com'
                   _objname: netdst__name
-                - host_name: "*.ggpht.net"
+                - host_name: '*.ggpht.net'
                   _objname: netdst__name
                 - host_name: android.clients.google.com
                   _objname: netdst__name
@@ -264,7 +252,6 @@
                   _objname: netdst__name
                 - host_name: ggpht.net
                   _objname: netdst__name
-
     - name: Create Captive Portal Profile
       aos_api_config:
         method: POST
@@ -279,14 +266,14 @@
               cp_redirect_pause:
                 redirect-pause: 3
               cp_login_location:
-                login-page: https://cp-corp123.aruba-tme.com/onboard/byod_employee_onboard.php
+                login-page: >-
+                  https://cp-corp123.aruba-tme.com/onboard/byod_employee_onboard.php
               cp_welcome_location:
-                welcome-page: "/auth/welcome.html"
+                welcome-page: /auth/welcome.html
               cp_white_list:
                 - white-list: google-play
               url_hash_key:
                 url-hash-key: xxxxx
-
     - name: Create a SSID Profile
       aos_api_config:
         method: POST
@@ -298,7 +285,6 @@
                 essid: TME-MobileFirst-byod_employee
               opmode:
                 wpa2-aes: true
-
     - name: Create a Virtual AP Profile
       aos_api_config:
         method: POST
@@ -312,7 +298,6 @@
                 profile-name: MobileFirst-byod_employee
               vlan:
                 vlan: '18'
-
     - name: Create an AP Group
       aos_api_config:
         method: POST
