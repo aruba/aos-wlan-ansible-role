@@ -1,15 +1,14 @@
----
--  hosts: all
-   roles:
+- hosts: all
+  roles:
     - role: arubanetworks.aos_wlan_role
-   tasks:
+  tasks:
     - name: Configuring an Interface VLAN
       aos_api_config:
         method: POST
         config_path: /md/SLR
         data:
           - int_vlans:
-              - id: 10 #vlan id 10 should already exist
+              - id: 10
                 int_vlan_ip:
                   ipaddr: 2.2.2.2
                   ipmask: 255.255.255.0

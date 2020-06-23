@@ -1,9 +1,8 @@
----
--  name: Create and configure an internal Guest SSID
-   hosts: all
-   roles:
+- name: Create and configure an internal Guest SSID
+  hosts: all
+  roles:
     - role: arubanetworks.aos_wlan_role
-   tasks:
+  tasks:
     - name: Create the ssid profile with essid and opmode
       aos_api_config:
         method: POST
@@ -16,7 +15,6 @@
                 essid: guest-demo
               opmode:
                 opensystem: true
-
     - name: Create the netdestination for the authenticated clients
       aos_api_config:
         method: POST
@@ -29,7 +27,6 @@
                   netmask: 255.0.0.0
                 - address: 192.16.0.0
                   netmask: 255.255.0.0
-
     - name: Create the periodic time range
       aos_api_config:
         method: POST
@@ -41,7 +38,6 @@
                 - day: Weekday
                   StartTime: '07:00'
                   EndTime: '18:00'
-
     - name: Create the policy with session acls and time range
       aos_api_config:
         method: POST
@@ -79,7 +75,6 @@
                   dany: true
                   service-any: true
                   deny: true
-
     - name: Create the user role assigned after captive portal authentication
       aos_api_config:
         method: POST
@@ -90,7 +85,6 @@
               role__acl:
                 - acl_type: session
                   pname: acl-guest-demo-time-range
-
     - name: Create the captive portal authentication profile
       aos_api_config:
         method: POST
@@ -107,7 +101,6 @@
               allow_user: {}
               logout_popup: {}
               cp_proto_http: {}
-
     - name: Create the guest logon user role
       aos_api_config:
         method: POST
@@ -126,7 +119,6 @@
                   pname: captiveportal6
               role__cp:
                 cp_profile_name: cp-guest-demo
-
     - name: Create the aaa profile
       aos_api_config:
         method: POST
@@ -136,7 +128,6 @@
               profile-name: aaa-guest-demo
               default_user_role:
                 role: usr-guest-demo
-
     - name: Create the virtual ap profile
       aos_api_config:
         method: POST
@@ -150,7 +141,6 @@
                 vlan: 16
               ssid_prof:
                 profile-name: ssid-guest-demo
-
     - name: Create the AP group with virtual AP profile
       aos_api_config:
         method: POST
