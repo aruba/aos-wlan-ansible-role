@@ -42,6 +42,8 @@ The variables that should be defined in your inventory for your AOS host are:
 
 ### Sample Inventories:
 
+Sample `inventory.yml`:
+
 ```yaml
 all:
   hosts:
@@ -104,6 +106,8 @@ set role to `arubanetworks.aos_wlan_role`:
                     rad_host:
                       host: 1.1.1.1
 ```
+
+You can also find pre-written playbooks for reference in the **sample_playbooks** directory on the GitHub repository. There are multiple playbooks for various use-cases/tasks typically performed on the Mobility Master, using different modules available with this role. You can choose an intended playbook and use it to build your own playbooks. 
 
 Contribution
 -------
