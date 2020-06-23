@@ -1,9 +1,8 @@
----
--  name: Create and configure a dot1x SSID
-   hosts: all
-   roles:
+- name: Create and configure a dot1x SSID
+  hosts: all
+  roles:
     - role: arubanetworks.aos_wlan_role
-   tasks:
+  tasks:
     - name: Creating a RADIUS Server
       aos_api_config:
         method: POST
@@ -13,7 +12,6 @@
               rad_server_name: test_dot1x
               rad_host:
                 host: 1.1.1.1
-
     - name: Creating a Server Group Profile
       aos_api_config:
         method: POST
@@ -23,7 +21,6 @@
               sg_name: test_dot1x
               auth_server:
                 - name: test_dot1x
-
     - name: Creating a SSID Profile
       aos_api_config:
         method: POST
@@ -35,7 +32,6 @@
                 essid: test_dot1x
               opmode:
                 wpa2-aes: true
-
     - name: Creating a DOT1X Profile
       aos_api_config:
         method: POST
@@ -43,7 +39,6 @@
         data:
           - dot1x_auth_profile:
               profile-name: test_dot1x
-
     - name: Creating a AAA Profile
       aos_api_config:
         method: POST
@@ -55,19 +50,17 @@
                 profile-name: test_dot1x
               dot1x_server_group:
                 srv-group: test_dot1x
-
     - name: Creating a Virtual AP Profile
       aos_api_config:
         method: POST
         config_path: /md/Boston
         data:
-         - virtual_ap:
-             profile-name: test_dot1x
-             aaa_prof:
-               profile-name: test_dot1x
-             ssid_prof:
-               profile-name: test_dot1x
-
+          - virtual_ap:
+              profile-name: test_dot1x
+              aaa_prof:
+                profile-name: test_dot1x
+              ssid_prof:
+                profile-name: test_dot1x
     - name: Creating an AP Group
       aos_api_config:
         method: POST

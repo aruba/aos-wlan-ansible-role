@@ -1,8 +1,7 @@
----
--  hosts: all
-   roles:
+- hosts: all
+  roles:
     - role: arubanetworks.aos_wlan_role
-   tasks:
+  tasks:
     - name: Adding a Server Group Profile
       aos_api_config:
         method: POST
@@ -11,4 +10,4 @@
           - server_group_prof:
               sg_name: test_server_group
               auth_server:
-                name: test_radius_server #should already exist or use "Internal"
+                name: test_radius_server
