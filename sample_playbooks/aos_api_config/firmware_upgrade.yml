@@ -1,8 +1,7 @@
----
--  hosts: all
-   roles:
+- hosts: all
+  roles:
     - role: arubanetworks.aos_wlan_role
-   tasks:
+  tasks:
     - name: Upgrading firmware
       aos_api_config:
         method: POST
@@ -14,7 +13,6 @@
               username: admin
               filename: ArubaOS_70xx_8.6.0.0_74441
               passwd: admin-passwd
-
     - name: Reloading Controller
       aos_api_config:
         method: POST
