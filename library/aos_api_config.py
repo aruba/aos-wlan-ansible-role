@@ -107,8 +107,8 @@ options:
                     - $lt (matches a value which is less than the filter)
                     - $lte (matches a value which is less than or equal to the filter)
                     - $nin (pattern does not match the filter. Opposite of $in)
-                    - $in (pattern matches the filter value. E.g., if filter says “ap”,
-                           “default-ap” and “ap-grp1” will both match)
+                    - $in (pattern matches the filter value. E.g., if filter says "ap",
+                           "default-ap" and "ap-grp1" will both match)
         required: false
         type: list
 
