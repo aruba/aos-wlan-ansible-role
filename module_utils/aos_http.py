@@ -54,7 +54,7 @@ class AosApi(HttpHelper):
             offset=self._module.params.get('offset'),
             total=self._module.params.get('total')
             )
-        query_params.update({key: value for key, value in params.iteritems() if value is not None})
+        query_params.update({key: value for key, value in params.items() if value is not None})
         return query_params
 
     def get_url(self, url, params=None):
