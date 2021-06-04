@@ -228,7 +228,7 @@ def main():
                                  "given config_path along with the ones inherited "
                                  "from the hierarchy above")
         else:
-            module.fail_json(changed=False, response=result['resp'],
+            module.exit_json(changed=False, response=result['resp'],
                              response_code=result['code'])
 
     else:
