@@ -22,6 +22,7 @@ running on the Mobility Master and Standalone controllers
 # under the License.
 
 import json
+import urllib.parse
 from ansible.module_utils._text import to_text
 from ansible.module_utils.connection import ConnectionError
 from ansible.module_utils.six.moves.urllib.error import HTTPError
@@ -43,7 +44,7 @@ class HttpApi(HttpApiBase):
         super(HttpApi, self).__init__(*args, **kwargs)
 
     def login(self, username, password):
-        path = '/v1/api/login?username='+username+'&password='+password
+        path = '/v1/api/login?username='+urllib.parse.quote(str(username), safe='')+'&password='+urllib.parse.quote(str(password), safe='')
         method = 'GET'
         self.send_request(data=None, path=path, method=method)
 
